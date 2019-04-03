@@ -51,7 +51,6 @@ function makeTokenFromUser(user) {
 
   const token = jwt.sign(payload, 'Temporary Secret For Testing', options);
 
-
   return token;
 }
 
