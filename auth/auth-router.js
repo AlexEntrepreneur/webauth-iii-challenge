@@ -10,8 +10,11 @@ const router = express.Router();
 router.use(express.json());
 
 router.post('/register', (req, res) => {
-  const { username, password, department } = req.body;
+  let { username, password, department } = req.body;
   const requestBodyComplete = !!(username && password && department);
+  const hash = bcrypt.hashSync(password, 10);
+
+  password = hash;
 
   if (requestBodyComplete) {
     Users.insert({ username, password, department })
