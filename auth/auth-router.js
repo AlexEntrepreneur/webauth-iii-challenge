@@ -20,7 +20,7 @@ router.post('/register', (req, res) => {
   if (requestBodyComplete) {
     Users.insert({ username, password, department })
       .then(success => {
-        res.json({
+        res.status(201).json({
           message: `Registered as ${req.body.username}`
         })
       })

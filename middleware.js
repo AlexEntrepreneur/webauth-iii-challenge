@@ -19,7 +19,7 @@ const restrictedRoute = (req, res, next) => {
     });
   }
   else {
-    res.json('You shall not pass! You need to be authed');
+    res.status(401).json('You shall not pass! You need to be authed');
   }
 }
 
