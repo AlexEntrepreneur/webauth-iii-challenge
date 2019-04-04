@@ -1,36 +1,19 @@
 import React from 'react';
-import axios from 'axios';
-
-import { API_URL } from '../constants';
+import login from '../HelperFunctions/login';
 
 function LoginView(props) {
-  const storeToken = (token) => {
-    localStorage.setItem('token', token);
-  }
-
-  const login = (user) => {
-    axios.post(`${API_URL}/login`, user)
-      .then(res => {
-        storeToken(res.data.token);
-        props.history.push('/users');
-      })
-      .catch(err => {
-        console.error(err.response.data.message);
-      });
-  }
-
   const onFormSubmit = (event) => {
     event.preventDefault();
     event.persist();
 
-
     const username = event.target['username_field'].value.toLowerCase();
     const password = event.target['password_field'].value;
-    const loginForm = { username, password };
 
+    const loginForm = { username, password };
     const formIsFilled = !!(username && password);
+
     if (formIsFilled) {
-      login(loginForm);
+      login(loginForm, props);
     }
   }
 
