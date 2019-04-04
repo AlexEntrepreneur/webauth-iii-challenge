@@ -6,14 +6,14 @@ const knexConfig = require('../knexfile');
 
 const router = express.Router();
 const authRequired = middleware.restrictedRoute;
-const Users = knex(knexConfig.development)('users');
+const db = knex(knexConfig.development);
 
 router.use(express.json());
 
 router.get('/', authRequired, (req, res) => {
   const requestUserInfo = req.decodedToken;
   const getUsersInDepartment = (department) => {
-    return Users.select('id', 'username', 'department').where({ department });
+    return db('users').select('id', 'username', 'department').where({ department });
   }
 
   getUsersInDepartment(requestUserInfo.department)

@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 const knexConfig = require('../knexfile');
 
-const Users = knex(knexConfig.development)('users');
+const db = knex(knexConfig.development);
 const router = express.Router();
 
 router.use(express.json());
@@ -18,7 +18,7 @@ router.post('/register', (req, res) => {
   password = hash;
 
   if (requestBodyComplete) {
-    Users.insert({ username, password, department })
+    db('users').insert({ username, password, department })
       .then(success => {
         res.status(201).json({
           message: `Registered as ${req.body.username}`
@@ -59,10 +59,10 @@ router.post('/login', (req, res) => {
   const requestBodyComplete = !!(username && password);
 
   if (requestBodyComplete) {
-    Users.select('*').where({ username }).first()
+    db('users').where({ username })
       .then(userObj => {
-        if (userObj) {
-          return userObj;
+        if (userObj.length) {
+          return userObj[0];
         }
         else {
           throw 'Invalid credentials. Try again.';
@@ -83,7 +83,7 @@ router.post('/login', (req, res) => {
       })
       .catch(err => {
         res.status(404).json({
-          message: err
+          message: `${err}`
         });
       })
       .catch(err => {
