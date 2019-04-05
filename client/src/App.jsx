@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Redirect, NavLink, Route, Switch } from 'react-router-dom';
+import { NavLink, Route, Switch } from 'react-router-dom';
+import RestrictedRoute from './HOCs/RestrictedRoute';
 import HomeView from './Views/HomeView';
 import RegisterView from './Views/RegisterView';
 import LoginView from './Views/LoginView';
@@ -30,17 +31,11 @@ class App extends Component {
             path="/login"
             component={LoginView}
           />
-          <Route
+          <RestrictedRoute
             exact
             path="/users"
-            render={(props) => {
-              if (!!localStorage.getItem('token')) {
-                return(
-                  <UsersView {...props}/>
-                );
-              }
-              return <Redirect to="/" />;
-            }}
+            redirectTo="/login"
+            component={UsersView}
           />
         </Switch>
       </>
