@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink, Route, Switch } from 'react-router-dom';
+import { Redirect, NavLink, Route, Switch } from 'react-router-dom';
 import HomeView from './Views/HomeView';
 import RegisterView from './Views/RegisterView';
 import LoginView from './Views/LoginView';
@@ -12,9 +12,6 @@ class App extends Component {
         <header>
           <nav>
             <NavLink to="/">Home</NavLink>
-            {/*
-            <NavLink to="/register">Register</NavLink>
-            <NavLink to="/login">Login</NavLink>*/}
           </nav>
         </header>
         <Switch>
@@ -36,7 +33,14 @@ class App extends Component {
           <Route
             exact
             path="/users"
-            component={UsersView}
+            render={(props) => {
+              if (!!localStorage.getItem('token')) {
+                return(
+                  <UsersView {...props}/>
+                );
+              }
+              return <Redirect to="/" />;
+            }}
           />
         </Switch>
       </>
