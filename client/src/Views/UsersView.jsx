@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import getUsers from '../HelperFunctions/getUsers';
 
 function UsersView(props) {
+  const [users, updateUsersState] = useState([]);
+
+  useEffect(() => {
+    getUsers(updateUsersState, console.error);
+  }, []);
+
   return (
     <div className="view">
       <h2>Users</h2>
       {
-        [].map(user => {
+        users.map(user => {
           return (
-            <div>{user.username}</div>
+            <div key={user.id}>
+              {user.username}
+              &nbsp;-&nbsp;
+              {user.department}
+            </div>
           )
         })
       }
